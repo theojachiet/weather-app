@@ -9,6 +9,9 @@ const currentTemperature = document.querySelector('.temperature-info');
 const currentDescription = document.querySelector('.current-description');
 const tomorrow = document.querySelector('.tomorrow-info');
 
+const searchButton = document.querySelector('button');
+const searchInput = document.querySelector('input');
+
 async function getWeather(location) {
     url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=54G4W6L2AJ2KDSZXAG9BBLGYG`
     const response = await fetch(url);
@@ -17,6 +20,14 @@ async function getWeather(location) {
     const locationWeather = processData(data);
     displayWeather(locationWeather);
 }
+
+const updateWeather = () => {
+    console.log(searchInput.value);
+    location = searchInput.value;
+    getWeather(location);
+};
+
+searchButton.addEventListener('click', updateWeather);
 
 function processData(data) {
     return {
