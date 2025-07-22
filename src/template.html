@@ -1,13 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <div class="container">
-        test text
+        <header>
+            <h1>WELCOME</h1>
+            <div class="search-container">
+                <div class="search-field">
+                    <p class="search-caption">Please enter a location...</p>
+                    <input type="search" placeholder="Paris">
+                </div>
+                <div class="search-button">
+                    <button type="submit">Search Weather</button>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <div class="weather-icon">
+                <img src="./images/weather-icons/clear-day.svg" alt="clear day">
+            </div>
+            <div class="weather-info">
+                <p class="current-location"><strong>Paris - 22/07/2025</strong></p>
+                <p class="current-temperature">Temperature : 25°C (75°F)</p>
+                <p class="current-description">Windy with no risk of rain</p>
+                <p class="tomorrow">Tomorrow : description of tomorrow in a short text (max 30°C / min 18°C)</p>
+            </div>
+        </section>
     </div>
 </body>
+
 </html>
