@@ -1,6 +1,6 @@
 import './reset.css';
 import './style.css';
-let location = 'paris,FR';
+let location = 'toulouse,FR';
 let url = '';
 
 //Assigning weather info
@@ -14,18 +14,31 @@ async function getWeather(location) {
     const response = await fetch(url);
     const data = await response.json();
 
-    currentLocation.textContent = data.resolvedAddress + ' ' + data.days[0].datetime;
+    const locationWeather = processData(data);
+    displayWeather(locationWeather);
+}
 
-    const tempInDegrees = Math.round((data.currentConditions.temp - 32) * (5/9));
-    currentTemperature.textContent = tempInDegrees + '°C (' + data.currentConditions.temp + '°F)';
+function processData(data) {
+    return {
+        currentAdress: data.resolvedAddress,
+        currentDay: data.days[0].datetime,
+        currentTempF: data.currentConditions.temp,
+        currentTempC: Math.round((data.currentConditions.temp - 32) * (5 / 9)),
+        currentDescription: data.currentConditions.conditions,
+        tomorrowMaxTemp: Math.round((data.days[1].tempmax - 32) * (5 / 9)),
+        tomorrowMinTemp: Math.round((data.days[1].tempmin - 32) * (5 / 9)),
+        tomorrowDescription: data.description
+    }
+}
 
-    currentDescription.textContent = data.currentConditions.conditions;
+function displayWeather(locationWeather) {
+    currentLocation.textContent = locationWeather.currentAdress + ' ' + locationWeather.currentDay;
 
-    const maxTempTomorrow = Math.round((data.days[1].tempmax - 32) * (5/9));
-    const minTempTomorrow = Math.round((data.days[1].tempmin - 32) * (5/9));
-    const descriptionTomorrow = data.description;
-    tomorrow.textContent = `${descriptionTomorrow} (max ${maxTempTomorrow}°C / min ${minTempTomorrow}°C )`
-    console.log(data);
+    currentTemperature.textContent = locationWeather.currentTempC + '°C (' + locationWeather.currentTempF + '°F)';
+
+    currentDescription.textContent = locationWeather.currentDescription;
+
+    tomorrow.textContent = `${locationWeather.tomorrowDescription} (max ${locationWeather.tomorrowMaxTemp}°C / min ${locationWeather.tomorrowMinTemp}°C )`;
 }
 
 getWeather(location);
