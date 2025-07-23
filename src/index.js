@@ -4,6 +4,8 @@ let location = 'toulouse,FR';
 let url = '';
 
 //Importing images
+import loadingImage from './images/misc/spinner.svg';
+
 function importAll(r) {
     let images = {};
     r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
@@ -18,22 +20,23 @@ function dynamicImport() {
 
 const images = dynamicImport();
 
-
-
 //Assigning weather info and icons
 const currentLocation = document.querySelector('.current-location');
 const currentTemperature = document.querySelector('.temperature-info');
 const currentDescription = document.querySelector('.description-info');
 const tomorrow = document.querySelector('.tomorrow-info');
-const icon = document.querySelector('img');
+const icon = document.querySelector('.weather-icon img');
 
 //Search bar button and input
 const searchButton = document.querySelector('button');
 const searchInput = document.querySelector('input');
 const searchError = document.querySelector('.error');
+const loadingIcon = document.querySelector('.search-button img');
+loadingIcon.src = loadingImage;
 
 async function getWeather(location) {
     try {
+        loadingIcon.className = '';
         url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=54G4W6L2AJ2KDSZXAG9BBLGYG`
         const response = await fetch(url);
 
@@ -42,6 +45,8 @@ async function getWeather(location) {
         }
 
         const data = await response.json();
+
+        loadingIcon.className = 'inactive';
 
         const locationWeather = processData(data);
         displayWeather(locationWeather);
