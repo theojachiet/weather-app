@@ -38,10 +38,11 @@ async function getWeather(location) {
 
     const locationWeather = processData(data);
     displayWeather(locationWeather);
+
+    console.log(data);
 }
 
 const updateWeather = () => {
-    console.log(searchInput.value);
     location = searchInput.value;
     getWeather(location);
 };
@@ -57,7 +58,8 @@ function processData(data) {
         currentDescription: data.currentConditions.conditions,
         tomorrowMaxTemp: Math.round((data.days[1].tempmax - 32) * (5 / 9)),
         tomorrowMinTemp: Math.round((data.days[1].tempmin - 32) * (5 / 9)),
-        tomorrowDescription: data.description
+        tomorrowDescription: data.description,
+        icon: data.currentConditions.icon
     }
 }
 
@@ -70,7 +72,7 @@ function displayWeather(locationWeather) {
 
     tomorrow.textContent = `${locationWeather.tomorrowDescription} (max ${locationWeather.tomorrowMaxTemp}°C / min ${locationWeather.tomorrowMinTemp}°C )`;
 
-    let imgAdress = locationWeather.currentDescription + '.svg';
+    let imgAdress = locationWeather.icon + '.svg';
     icon.src = images[imgAdress];
     icon.alt = locationWeather.currentDescription;
 }
