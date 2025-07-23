@@ -30,16 +30,30 @@ const icon = document.querySelector('img');
 //Search bar button and input
 const searchButton = document.querySelector('button');
 const searchInput = document.querySelector('input');
+const searchError = document.querySelector('.error');
 
 async function getWeather(location) {
-    url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=54G4W6L2AJ2KDSZXAG9BBLGYG`
-    const response = await fetch(url);
-    const data = await response.json();
+    try {
+        url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=54G4W6L2AJ2KDSZXAG9BBLGYG`
+        const response = await fetch(url);
 
-    const locationWeather = processData(data);
-    displayWeather(locationWeather);
+        if (response.status == 400) {
+            throw new Error('unknown location');
+        }
 
-    console.log(data);
+        const data = await response.json();
+
+        const locationWeather = processData(data);
+        displayWeather(locationWeather);
+
+        //Not displaying the error
+        searchError.textContent = '';
+        searchError.className = 'error';
+        console.log(data);
+    } catch (error) {
+        searchError.textContent = 'Invalid Location, please try another or put the country initials to clarify';
+        searchError.className = 'error active';
+    }
 }
 
 const updateWeather = () => {

@@ -6,7 +6,7 @@ body {
   align-items: center;
   font-size: 1.2rem;
 
-  background-color:beige;
+  background-color: beige;
   color: #333;
 }
 
@@ -42,7 +42,6 @@ input {
   padding-left: 12px;
   padding-right: 12px;
   margin-top: 7px;
-  margin-bottom: 10px;
   appearance: none;
   border: none;
   border-radius: 10px;
@@ -50,6 +49,24 @@ input {
 
 input:focus {
   outline: 3px solid green;
+}
+
+/* ERROR  */
+.error {
+  opacity: 0;
+}
+
+.active {
+  opacity: 1;
+  height: 2em;
+  text-align: center;
+  display: block;
+  background-color: coral;
+  margin: 0;
+  width: 100%;
+  border: 1px solid white;
+  border-radius: 8px;
+  color: whitesmoke;
 }
 
 .search-button button {
