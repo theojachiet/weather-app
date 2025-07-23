@@ -3,12 +3,31 @@ import './style.css';
 let location = 'toulouse,FR';
 let url = '';
 
-//Assigning weather info
+//Importing images
+function importAll(r) {
+    let images = {};
+    r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+    return images;
+}
+
+function dynamicImport() {
+    const images = importAll(require.context('./images/weather-icons/', false, /\.(png|jpe?g|svg)$/));
+
+    return images;
+}
+
+const images = dynamicImport();
+
+
+
+//Assigning weather info and icons
 const currentLocation = document.querySelector('.current-location');
 const currentTemperature = document.querySelector('.temperature-info');
-const currentDescription = document.querySelector('.current-description');
+const currentDescription = document.querySelector('.description-info');
 const tomorrow = document.querySelector('.tomorrow-info');
+const icon = document.querySelector('img');
 
+//Search bar button and input
 const searchButton = document.querySelector('button');
 const searchInput = document.querySelector('input');
 
@@ -50,6 +69,10 @@ function displayWeather(locationWeather) {
     currentDescription.textContent = locationWeather.currentDescription;
 
     tomorrow.textContent = `${locationWeather.tomorrowDescription} (max ${locationWeather.tomorrowMaxTemp}°C / min ${locationWeather.tomorrowMinTemp}°C )`;
+
+    let imgAdress = locationWeather.currentDescription + '.svg';
+    icon.src = images[imgAdress];
+    icon.alt = locationWeather.currentDescription;
 }
 
 getWeather(location);
