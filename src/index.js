@@ -5,6 +5,8 @@ let url = '';
 
 //Importing images
 import loadingImage from './images/misc/spinner.svg';
+import daytimeImage from './images/misc/daytime.jpg';
+import nighttimeImage from './images/misc/nighttime.jpg';
 
 function importAll(r) {
     let images = {};
@@ -26,6 +28,9 @@ const currentTemperature = document.querySelector('.temperature-info');
 const currentDescription = document.querySelector('.description-info');
 const tomorrow = document.querySelector('.tomorrow-info');
 const icon = document.querySelector('.weather-icon img');
+
+const body = document.querySelector('body');
+const title = document.querySelector('h1');
 
 //Search bar button and input
 const searchButton = document.querySelector('button');
@@ -51,6 +56,17 @@ async function getWeather(location) {
         const locationWeather = processData(data);
         displayWeather(locationWeather);
 
+        //Cusotm theme display based on day/night cycle
+        if (dayTime(locationWeather)) {
+            body.style.backgroundImage = `url(${daytimeImage})`;
+            body.style.color = "#333";
+            title.style.color = "#333";
+        } else {
+            body.style.backgroundImage = `url(${nighttimeImage})`;
+            body.style.color = "#ddd";
+            title.style.color = "#888";
+        }
+
         //Not displaying the error
         searchError.textContent = '';
         searchError.className = 'error';
@@ -58,6 +74,7 @@ async function getWeather(location) {
     } catch (error) {
         searchError.textContent = 'Invalid Location, please try another or put the country initials to clarify';
         searchError.className = 'error active';
+        console.log(error);
     }
 }
 
@@ -78,8 +95,15 @@ function processData(data) {
         tomorrowMaxTemp: Math.round((data.days[1].tempmax - 32) * (5 / 9)),
         tomorrowMinTemp: Math.round((data.days[1].tempmin - 32) * (5 / 9)),
         tomorrowDescription: data.description,
-        icon: data.currentConditions.icon
+        icon: data.currentConditions.icon,
+        datetime: data.currentConditions.datetime,
+        sunrise: data.currentConditions.sunrise,
+        sunset: data.currentConditions.sunset,
     }
+}
+
+function dayTime(locationWeather) {
+    return locationWeather.datetime > locationWeather.sunrise && locationWeather.datetime < locationWeather.sunset;
 }
 
 function displayWeather(locationWeather) {
